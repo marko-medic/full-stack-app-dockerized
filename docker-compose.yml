@@ -3,14 +3,14 @@ version: '3'
 services:
   frontend-app:
     build: 
-      context: ./client
+      context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "3002:3002"
     depends_on:
       - express-app
     volumes:
-      - ./client:/client
+      - ./frontend:/frontend
   express-app:
     build:
       context: ./server # Replace with the path to your Express app
