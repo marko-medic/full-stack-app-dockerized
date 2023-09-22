@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  frontend-app:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - express-app
+    volumes:
+      - ./client:/client
+  express-app:
+    build:
+      context: ./server # Replace with the path to your Express app
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mongodb
+    env_file:
+      - ./server/.env
+    volumes:
+      - ./server/:/server
+      - ./server/node_modules
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    env_file:
+      - ./server/.env
+
+volumes:
+  mongodb_data:
